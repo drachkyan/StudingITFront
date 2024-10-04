@@ -10,6 +10,7 @@ import {
 const Task = lazy(() => import('./components/pages/task/taskComp/task'));
 const Profile = lazy(() => import("./components/pages/profile/profile"));
 const TaskList = lazy(() => import("./components/pages/task/taskList/taskList"));
+const Auth = lazy(() => import("./components/auth/Auth"));
 const root:HTMLElement = document.getElementById("root");
 
 let a:number = 5;
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
         {
             path: "/profile",
             element: <Profile />,
+        },
+        {
+          path: "/auth",
+          element: <Auth />,
         },
       ]
     },

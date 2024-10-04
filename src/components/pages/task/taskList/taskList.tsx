@@ -11,7 +11,7 @@ const TaskList = () => {
     const [taskList, changeList] = useState<Task[]>([testTask]);
 
     useEffect(() => {
-        fetch('http://45.82.153.53:8000/tasksAPI/all/')
+        fetch('http://45.82.153.53:8000/tasksAPI/tasks/')
             .then(response => {
                 return response.json();
             })
