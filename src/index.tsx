@@ -9,7 +9,6 @@ import {
   } from "react-router-dom";
 const Task = lazy(() => import('./components/pages/task/taskComp/task'));
 const Profile = lazy(() => import("./components/pages/profile/profile"));
-const TaskList = lazy(() => import("./components/pages/task/taskList/taskList"));
 const Auth = lazy(() => import("./components/auth/Auth"));
 const root:HTMLElement = document.getElementById("root");
 import Main from "./components/pages/mainpage/main"

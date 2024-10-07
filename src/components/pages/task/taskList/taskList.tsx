@@ -7,8 +7,7 @@ const TaskList = () => {
         desc: string,
         cat: number[]
     }
-    const testTask:Task={name:"Sum a+b", desc:"Find Sum A+b", cat:[1]}
-    const [taskList, changeList] = useState<Task[]>([testTask]);
+    const [taskList, changeList] = useState<Task[]>([]);
 
     useEffect(() => {
         fetch('http://45.82.153.53:8000/tasksAPI/tasks/')
@@ -26,7 +25,6 @@ const TaskList = () => {
     }, []); 
 
     return (
-        
         <Suspense fallback={<div>Loading...</div>}>
             {taskList.map((el: Task, index: number) => {
                 return (
