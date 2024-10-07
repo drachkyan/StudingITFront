@@ -1,11 +1,18 @@
 import "./auth.less"
-import React from "react"
+import React, {lazy} from "react"
 
-const Auth = ()=>{
-    document.cookie = "user=John; domain=localhost:8080"
-    console.log(document.cookie )
+const Login = lazy(() => import("./signin/signin"));
+const Register = lazy(() => import("./signup/signup"));
+
+interface AuthProps {
+    mode: "login" | "registration"; // Определяем типы для пропса mode
+}
+
+const Auth: React.FC<AuthProps> = ({mode})=>{
     return (
-        <div> <p>Auth</p></div>
+        <div className="authBox"> 
+            {mode==="login"?(<Login />):(<Register />)}
+        </div>
     )
 }
 

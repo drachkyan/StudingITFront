@@ -5,10 +5,7 @@ import "./mainstyle.less"
 export const App = () =>{
     return (
         <div className="main">
-        <div className="header"></div>
-        <div className='content'>
             <Outlet />
-        </div>
         </div>
     )
 }
