@@ -25,7 +25,7 @@ const Login = ()=>{
         }
     },[error])
     const [password, setPas] = useState('');
-    type dataError = "null" | "incorrect" | "none" | "incorrect email"
+    type dataError = "null" | "incorrect" | "none" | "incorrect email"|"acc taken"
     const [login, setLog] = useState('');
     const [signerror, setError] = useState<dataError>("none")
     const getErrorLine = (error:dataError)=>{
@@ -38,6 +38,7 @@ const Login = ()=>{
                 return "Email has unknown format"
             case "incorrect":
                 return "Wrong password or login"
+            
         }
     }
     const check = (pas:string,log:string)=>{
@@ -57,7 +58,7 @@ const Login = ()=>{
                 <div className="password field">
                     <p>Your password</p>
                     <input type="password" onChange={(data)=>{setPas(data.target.value)}}/>
-                    <p className="small">Forgot your password</p>
+                    <p className="small">Forgot your password...</p>
                 </div>
             </div>
             <div className="errorbox"><p className="errorp" style={{display:(signerror==="none")?"none":"block"}}>{getErrorLine(signerror)}</p></div>

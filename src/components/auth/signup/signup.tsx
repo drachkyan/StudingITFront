@@ -1,46 +1,35 @@
-import React, {useState} from "react";
+import React, {startTransition, useEffect, useState} from "react";
 import "./signup.less"
 import axios from "axios";
-
+import {useNavigate} from "react-router-dom"
+import { fetchRegistration } from "../axiosreq";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks/redux";
 const Register = ()=>{
+    const dispatch = useAppDispatch()
+    const {isloading,error,isLogged} = useAppSelector(state=>state.loginReducer)
     type dataError = "null" | "incorrect" | "different passwords" | "none" | "incorrect email"
     const [password, setPas] = useState("");
     const [password2, setPas2] = useState("");
     const [login, setLog] = useState("");
     const [email, setEmail] = useState("");
     const [signerror, setError] = useState<dataError>("none")
-    const handleSubmitForm = (login:string,email:string,password:string) => {    
-
-        axios.post('http://45.82.153.53:8000/account/registration/', {
-        
-                    username: login,
-                    email: email,
-                    password:password,
-        
-                })
-        
-                .then(response => {
-                    console.log(response.status)
-                    if (response.status == 302){
-                        setError("incorrect");
-                        return;
-                    }
-                    if (response.status != 201) return
-                    
-                    localStorage.setItem('accessToken', response.data.access);
-        
-                    localStorage.setItem('refreshToken', response.data.refresh);
-                    
-                    
-                })
-        
-                .catch(error => {
-                    if (error.status == 302){
-                        setError("incorrect");
-                    }
-                })
-        
-            }
+    const navigate = useNavigate()
+    const HandleClick= (url:string)=>{
+        startTransition(()=>{
+            navigate(url)
+        })
+    }
+    useEffect(()=>{
+        if (isLogged) {
+            localStorage.setItem('isLogged', "true");
+            HandleClick('/');
+        }
+    },[isLogged])
+    useEffect(()=>{
+        if (error!==''){
+            setError("incorrect")
+        }
+    },[error])
     const getErrorLine = (error:dataError)=>{
         switch (error){
             case "none":
@@ -95,10 +84,9 @@ const Register = ()=>{
             </div>
             <div className="errorbox"><p className="errorp" style={{display:(signerror==="none")?"none":"block"}}>{getErrorLine(signerror)}</p></div>
             <div className="signinButton" onClick={()=>{
-                if (check(password,password2,email,login)){
-                    handleSubmitForm(login,email,password)
-                }
-            }}>
+                    if (check(password,password2,email,login)){
+                        dispatch(fetchRegistration(login,password,email))
+                    }}}>
                 <p>Create account</p>
             </div>
             <div className="altSign">
@@ -108,4 +96,5 @@ const Register = ()=>{
         </div>
     )
 }
+
 export default Register
