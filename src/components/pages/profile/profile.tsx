@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../store/hooks/redux';
 import LoginSlice from '../../../store/reducers/login';
 import { fetchLogOut } from '../../auth/axiosreq';
+import "./profile.less"
 
 const Profile = ()=>{
        
@@ -13,18 +14,21 @@ const Profile = ()=>{
             navigate(url)
         })
     }
+    const HandleClick=()=>{
+        const refresh_roken = localStorage.getItem("refreshToken")
+        
+        dispatch(fetchLogOut(refresh_roken))
+        navigateURL('/')
+    }
+    
     return (
-
-        <div className='profile'>
-            <p>profile</p>
-            <p onClick={()=>{
-                
-                const refresh_roken = localStorage.getItem("refreshToken")
-                console.log(refresh_roken)
-                dispatch(fetchLogOut(refresh_roken))
-                navigateURL('/')
-            }}> LOG OUT</p>
+        <div className='box'>
+            <div className='profile'>
+            <p>Profile</p>
+            <p onClick={HandleClick}>LOG OUT</p>
         </div>
+        </div>
+        
         
     )
 }

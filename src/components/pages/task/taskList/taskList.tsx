@@ -26,14 +26,21 @@ const TaskList = () => {
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
-            {taskList.map((el: Task, index: number) => {
-                return (
-                    <div className="task" key={index}>
-                        <p>{el.name}</p>
-                        <p>{el.desc}</p>
-                    </div>
-                );
-            })}
+            <div className='taskList'>
+                <div className='welcomeBlock'>
+                    <h1>Welcome on StudyinGIT!</h1>
+                    <p>Pick up filters on topics of interest, choose a task and start solving it!</p>
+                </div>
+                {taskList.map((el: Task, index: number) => {
+                    return (
+                        <div className="task" key={index}>
+                            <p>{el.name}</p>
+                            <p>{el.desc}</p>
+                        </div>
+                    );
+                })}
+            </div>
+            
         </Suspense>
     );
 }

@@ -12,6 +12,8 @@ export const fetchAuth = (username:string,password:string)=>async (dispatch: App
         dispatch(LoginSlice.actions.userFetchSuccess())
         localStorage.setItem('accessToken', response.data.access);
         localStorage.setItem('refreshToken', response.data.refresh);
+        console.log(localStorage.getItem('accessToken'))
+        console.log(localStorage.getItem('refreshToken'))
     } catch (error) {
         dispatch(LoginSlice.actions.userFetchError(error.message))
     }
@@ -32,9 +34,16 @@ export const fetchRegistration = (username:string,password:string,email:string)=
 
 export const fetchLogOut = (refresh:string)=>async (dispatch:AppDispatch)=>{
     try{
-    await axios.post("http://45.82.153.53:8000/account/logout",{refresh_token:refresh})
+    const token = localStorage.getItem("accessToken")
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };    
+    const body = {refresh_token:refresh}
     dispatch(LoginSlice.actions.userLogOut())
     localStorage.setItem('isLogged', "false");
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
+    await axios.post("http://45.82.153.53:8000/account/logout/",body,config)
     }catch(error){
         
     }

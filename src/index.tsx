@@ -2,7 +2,7 @@ import "./style.less"
 import React from 'react';
 import { lazy } from 'react';
 import {createRoot} from 'react-dom/client'
-import {App} from './components/app'
+import App from './components/app'
 import {
     createBrowserRouter,
     RouterProvider,
@@ -16,40 +16,7 @@ import Main from "./components/pages/mainpage/main"
 
 const container = createRoot(root);
 
-const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <App />,
-      children: [
-        {
-            path: "/task",
-            element: <Task />,
-        },
-        
-        {
-            path: "/profile",
-            element: <Profile />,
-        },
-        {
-          path: "/auth",
-          element: <Auth mode="login" />,
-        },
-        {
-          path: "/signup",
-          element: <Auth mode="registration" />,
-        },
-        {
-          path: "/",
-          element: <Main />,
-        },
-        {
-          path:"/e404",
-          element: <NotFound />
-        }
-      ]
-    },
-  ]);
 
-container.render(<RouterProvider router={router} />)
+container.render(<App />)
 
 

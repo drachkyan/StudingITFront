@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
 
-const MyEditor = () => {
+interface MyEditorProps {
+  defaultText?: string; 
+}
+
+const MyEditor: React.FC<MyEditorProps> = ({ defaultText }) => {
   const [codeText, setText]=useState("");
   const handleEditorChange = (value:any, event:any) => {
     setText(value);
   };
-  let defaultText:string = "int main(123)";
+
   type language = "cpp"|"javascript"|"c"|"python";
   interface editor{
     language: language,
     defaultValue: string,
   }
-  const editor:editor = {language:"python",defaultValue:"илюха лох"};
+  const editor:editor = {language:"python",defaultValue:defaultText};
   return (
     <div className='CodeEditor'>
       <Editor
