@@ -34,8 +34,8 @@ const TaskList = () => {
                 {taskList.map((el: Task, index: number) => {
                     return (
                         <div className="task" key={index}>
-                            <p>{el.name}</p>
-                            <p>{el.desc}</p>
+                            <div className='name'><h1>{el.name}</h1></div>
+                            <div className='taskDescription'></div>
                         </div>
                     );
                 })}
