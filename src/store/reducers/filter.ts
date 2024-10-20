@@ -16,7 +16,6 @@ const FilterSlice = createSlice({
     initialState,
     reducers:{
         changeField(state,action:PayloadAction<number>){
-            console.log(action.payload)
             switch (action.payload) {
                 case 1:
                     state.programming?state.programming=false:state.programming=true

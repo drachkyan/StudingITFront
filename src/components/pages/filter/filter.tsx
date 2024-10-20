@@ -1,8 +1,12 @@
 import { useAppDispatch, useAppSelector } from "../../../store/hooks/redux";
 import FilterSlice from "../../../store/reducers/filter"
-import { AppDispatch } from "../../../store/store";
+import FilterUpdater from "../../../store/reducers/filtrerupdate";
+
 import "./filter.less"
 import React, { useState, useEffect } from 'react'
+import { fetchList } from "./request";
+import ListUpdater from "../../../store/reducers/tasklist";
+
 
 enum categories{
     programming=1,
@@ -11,13 +15,16 @@ enum categories{
 
 const Filter = ()=>{
     const filter = useAppSelector(state=>state.filterReducer)
+    const {isLoading} = useAppSelector(state=>state.updaterReducer)
     const dispatch = useAppDispatch()
     
     const change = (field:number)=>{
         dispatch(FilterSlice.actions.changeField(field))
     }
+    
     const HandleApply=()=>{
-        console.log(filter)
+        dispatch(fetchList(filter))
+        
     }
     return(
         <div className="Filter">
@@ -31,7 +38,7 @@ const Filter = ()=>{
                     <input type="checkbox" id="git" className="checkboxClass" onChange={()=>change(categories.git)}/>
                     <label htmlFor="git"><img src="https://repository-images.githubusercontent.com/321181292/f6ecab80-8749-11eb-9e0b-0bb1fa038038" className="gitlogo" /></label>
                 </div>
-                <div className="apply disableCopy" onClick={HandleApply}><p>Apply</p></div>
+                <div className="apply disableCopy" style={{background:isLoading?"green":"#B8EE91"}} onClick={HandleApply}><p>Apply</p></div>
             </div>
         </div>
     )
