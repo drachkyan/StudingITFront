@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 interface Task {
     name: string,
     desc: string,
-    hash: string,
+    hash_name: string,
     cat: number[]
 }
 

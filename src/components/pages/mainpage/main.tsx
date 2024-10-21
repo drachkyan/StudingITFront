@@ -13,7 +13,6 @@ const Main = ()=>{
             <div className="container">
             <Filter />
                 <div className="content">
-                    {isLogged? <p>Welcome</p>:null}
                     <TaskList />
                 </div>
                 

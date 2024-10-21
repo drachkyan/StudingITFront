@@ -18,6 +18,11 @@ const Filter = ()=>{
     const {isLoading} = useAppSelector(state=>state.updaterReducer)
     const dispatch = useAppDispatch()
     
+    useEffect(()=>{
+        dispatch(FilterSlice.actions.makeFilterDefault())
+        dispatch(fetchList(filter))
+    },[])
+
     const change = (field:number)=>{
         dispatch(FilterSlice.actions.changeField(field))
     }

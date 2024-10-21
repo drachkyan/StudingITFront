@@ -26,6 +26,9 @@ const FilterSlice = createSlice({
                 default:
                     break;
             }
+        },
+        makeFilterDefault(state){
+            state=initialState
         }
     }
 })

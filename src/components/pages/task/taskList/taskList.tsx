@@ -1,17 +1,24 @@
-import React, { useEffect, useState, Suspense } from 'react';
+import React, { useEffect, useState, Suspense, startTransition } from 'react';
 import "./taskList.less";
 import { useAppSelector } from '../../../../store/hooks/redux';
+import { Navigate, useNavigate } from 'react-router-dom';
+import Task from '../taskComp/task';
 
-interface Task {
+interface TaskType {
     name: string,
     desc: string,
-    hash: string,
+    hash_name: string,
     cat: number[]
 }
 
 const TaskList = () => {
     const {tasks} = useAppSelector(state=>state.listReducer)
-
+    const navigate = useNavigate()
+    const HandleClick= (url:string)=>{
+        startTransition(()=>{
+            navigate(url)
+        })
+    }
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <div className='taskList'>
@@ -19,9 +26,9 @@ const TaskList = () => {
                     <h1>Welcome on StudyinGIT!</h1>
                     <p>Pick up filters on topics of interest, choose a task and start solving it!</p>
                 </div>
-                {tasks.map((el: Task, index: number) => {
+                {tasks.map((el: TaskType, index: number) => {
                     return (
-                        <div className="task" key={index}>
+                        <div className="task" key={index} onClick={()=>{}}>
                             <div className='name'><h1>{el.name}</h1></div>
                             <div className='taskDescription'></div>
                         </div>
