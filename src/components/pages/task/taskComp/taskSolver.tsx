@@ -4,10 +4,6 @@ import "./taskstyle.less"
 import { useLocation } from 'react-router-dom';
 import { axiosTask } from './taskRequst';
 
-interface hash_name {
-  hash: string | undefined
-}
-
 interface Task{
   name:string,
   patterns:{
@@ -33,19 +29,29 @@ const initialState:Task={
 const TaskSolver = ()=>{
     const [taskState,setTask] = useState<Task>(initialState)
     const hash_name = useLocation().pathname.split('/');
-    
-    axiosTask(hash_name[hash_name.length-1]).then((res)=>{setTask(res.data)})
-    
+    useEffect(()=>{  
+        axiosTask(hash_name[hash_name.length-1]).then((res)=>{setTask(res.data)})
+    },[])
+
+    const [selectedOption, setSelectedOption] = useState('python');
+
+    const handleChange = (event:string) => {
+        setSelectedOption(event);
+    };
     return (
         
         <div className='taskSolver'>
         <div>
             <h1>{taskState.name}</h1>
+            <p onClick={()=>{console.log(taskState.patterns.python)}}>{taskState.desc}</p>
         </div>
-        <div className='problem'>
-            <p>{taskState.desc}</p>
-            <CodeEditor defaultText={taskState.patterns.python}/>
-        </div>
+        <div></div>
+        <select value={selectedOption} onChange={(event)=>{handleChange(event.target.value)}}>
+        <option value="cpp">C++</option>
+        <option value="go">Go</option>
+        <option value="py">Python</option>
+        </select>
+        <CodeEditor taskState={taskState} language={selectedOption}/>
         </div>
     );
 };

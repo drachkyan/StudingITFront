@@ -1,4 +1,4 @@
-import React, { useEffect, useRef,lazy } from 'react';
+import React, { useEffect, useRef,lazy, Suspense } from 'react';
 import CodeEditor from "./codeEditor"
 import "./taskstyle.less"
 import { Outlet } from 'react-router-dom';
@@ -9,8 +9,10 @@ const Task=()=>{
   return (
     <div>
       <Header></Header>
-      <Outlet />
+      <Outlet />  
+      
     </div>
+
 
   )
 };
