@@ -1,5 +1,5 @@
 import "./mainpage.less"
-import React, {useState, useEffect, lazy} from "react"
+import React, {useState, useEffect, lazy, Suspense} from "react"
 import Header from "../header/header"
 const TaskList = lazy(() => import("../task/taskList/taskList"));
 import Filter from "../filter/filter";
@@ -13,7 +13,10 @@ const Main = ()=>{
             <div className="container">
             <Filter />
                 <div className="content">
-                    <TaskList />
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <TaskList />
+                    </Suspense>
+                    
                 </div>
                 
             </div>

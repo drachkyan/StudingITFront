@@ -28,9 +28,8 @@ const TaskList = () => {
                 </div>
                 {tasks.map((el: TaskType, index: number) => {
                     return (
-                        <div className="task" key={index} onClick={()=>{}}>
+                        <div className="task" key={index} onClick={()=>{HandleClick("task/"+el.hash_name)}}>
                             <div className='name'><h1>{el.name}</h1></div>
-                            <div className='taskDescription'></div>
                         </div>
                     );
                 })}

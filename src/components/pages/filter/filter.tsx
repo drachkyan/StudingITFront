@@ -3,7 +3,7 @@ import FilterSlice from "../../../store/reducers/filter"
 import FilterUpdater from "../../../store/reducers/filtrerupdate";
 
 import "./filter.less"
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, startTransition } from 'react'
 import { fetchList } from "./request";
 import ListUpdater from "../../../store/reducers/tasklist";
 
@@ -28,8 +28,9 @@ const Filter = ()=>{
     }
     
     const HandleApply=()=>{
-        dispatch(fetchList(filter))
-        
+        startTransition(() => {
+            dispatch(fetchList(filter))
+        });
     }
     return(
         <div className="Filter">
