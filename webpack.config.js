@@ -1,8 +1,9 @@
 const path = require('path');
 const {CleanWebpack, CleanWebpackPlugin} = require('clean-webpack-plugin')
 const HTMLWebpack = require('html-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 module.exports = {
-    mode : "development",
+    mode: process.env.NODE_ENV || 'development',
     entry: ["@babel/polyfill","./src/index.tsx"],
     output: {
         path: path.resolve(__dirname,"dist"),
@@ -19,6 +20,8 @@ module.exports = {
     plugins: [
         new HTMLWebpack({template:"./src/index.html"}),
         new CleanWebpackPlugin(),
+        new BundleAnalyzerPlugin(),
+
     ],
     module: {
         rules:[

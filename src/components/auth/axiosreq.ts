@@ -35,6 +35,7 @@ export const fetchRegistration = (username:string,password:string,email:string)=
 }
 
 export const fetchLogOut = (refresh:string)=>async (dispatch:AppDispatch)=>{
+
     try{
     const token = localStorage.getItem("accessToken")
     const config = {
@@ -42,10 +43,8 @@ export const fetchLogOut = (refresh:string)=>async (dispatch:AppDispatch)=>{
     };    
     const body = {refresh_token:refresh}
     dispatch(LoginSlice.actions.userLogOut())
+    localStorage.clear()
     localStorage.setItem('isLogged', "false");
-    localStorage.removeItem('accessToken')
-    localStorage.removeItem('refreshToken')
-    localStorage.removeItem('username')
     await axios.post("http://45.82.153.53:8000/account/logout/",body,config)
     }catch(error){
         
