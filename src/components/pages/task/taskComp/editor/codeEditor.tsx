@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { startTransition, useEffect, useState } from 'react';
 import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import "./editorStyle.less"
 import CustomSelect from './custom_select/CustomSelect';
+import axios from 'axios';
+import { refreshTokenFunction } from './refresh_access';
+import { WEBSOCKET } from '../../../../../../constants';
 
 interface Task {
   name: string;
@@ -24,8 +27,8 @@ const MyEditor: React.FC<MyEditorProps> = ({ taskState }) => {
   const hash_name = useLocation().pathname.split('/');
   const [codeText, setText] = useState<string>();
   const [isloading, setLoading] = useState<boolean>(false)
+  const [isLogged,setLogged] = useState<string>(localStorage.getItem("isLogged"))
   
-
   useEffect(() => {
     switch (selectedOption) {
       case 'py':
@@ -42,13 +45,19 @@ const MyEditor: React.FC<MyEditorProps> = ({ taskState }) => {
         break;
     }
   }, [selectedOption, taskState]);
-
+  const navigate = useNavigate() 
+    const navigateURL= ( url:string)=>{
+        startTransition(()=>{
+            navigate(url)
+        })
+    }
   const sendWebSocket =()=>{
     
     localStorage.setItem(selectedOption+ hash_name[hash_name.length-1], codeText);
-    const socket = new WebSocket('http://45.82.153.53:1234/ws');
+    const socket = new WebSocket(WEBSOCKET);
     setLoading(true);
-    socket.onopen= ()=>{
+    
+    const sendCode = ()=> {
       console.log("Sending code...")
       socket.send(
         JSON.stringify(
@@ -56,14 +65,38 @@ const MyEditor: React.FC<MyEditorProps> = ({ taskState }) => {
             code : codeText,
             lang : selectedOption,
             task_name : taskState.name,
-            username : localStorage.getItem("username")||"drachka"
+            token : localStorage.getItem("accessToken")
          }
         )
       )
     }
+
+    socket.onopen= ()=>{
+      sendCode()
+    }
     socket.onmessage = (message)=>{
       console.log(message.data)
-      setLoading(false)
+      const messageJSON = JSON.parse(message.data);
+      if (messageJSON.status===400){
+        localStorage.setItem("isLogged","false")
+        refreshTokenFunction(localStorage.getItem("refreshToken")).then(()=>{
+          if (localStorage.getItem("isLogged")==="true"){
+            sendWebSocket()
+          }
+          else{
+            navigateURL('/auth')
+          }
+        } 
+        )
+        
+      }else{
+        if (messageJSON.stage==="test" || messageJSON.message==="success"){
+          setLoading(false)
+        }else{
+          console.log(messageJSON.message)
+        }
+      }
+      
     }
   }
 
@@ -87,7 +120,10 @@ const MyEditor: React.FC<MyEditorProps> = ({ taskState }) => {
     <div className='CodeEditor'>
       <div className="editor-menu">
         <CustomSelect options={options} selectedOption={selectedOption} onChange={handleChange}/> 
-        <div className={'apply '+ (isloading ? 'loading':'notloading')} onClick={()=>{!isloading ? sendWebSocket() : console.log("testing...")}}><p>Run</p></div>
+        {(isLogged==="true")?
+        <div className={'apply '+ (isloading ? 'loading':'notloading')} onClick={()=>{!isloading ? sendWebSocket() 
+          : console.log("testing...")}}><p>Run</p></div>: <div className='notAuth'>You need to log in to send your solution...</div>}
+        
       </div>
       
       <Editor

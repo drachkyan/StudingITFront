@@ -3,6 +3,7 @@ import FilterUpdater from "../../../store/reducers/filtrerupdate";
 import { useAppDispatch } from "../../../store/hooks/redux";
 import { AppDispatch } from "../../../store/store";
 import ListUpdater from "../../../store/reducers/tasklist";
+import { FILTER } from "../../../../constants";
 
 
 interface filter{
@@ -27,7 +28,7 @@ const getCats=(filter:filter)=>{
 
 export const fetchList = (filter:filter)=> async (dispatch:AppDispatch)=>{
     try {
-        const response = await axios.post("http://45.82.153.53:8000/tasksAPI/filter_tasks/", getCats(filter))
+        const response = await axios.post(FILTER, getCats(filter))
         dispatch(FilterUpdater.actions.ListLoadingSuccess())
         dispatch(ListUpdater.actions.addTasks(response.data))
         

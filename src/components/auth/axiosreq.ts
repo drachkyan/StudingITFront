@@ -2,13 +2,14 @@ import axios from "axios";
 import { AppDispatch } from "../../store/store";
 import { LoginSlice } from "../../store/reducers/login";
 import Login from "./signin/signin";
+import { LOGIN, LOGOUT, REG } from "../../../constants";
 
 
 export const fetchAuth = (username:string,password:string)=>async (dispatch: AppDispatch)=>{
     
     try {
         dispatch(LoginSlice.actions.userFetchProcess())
-        const response = await axios.post("http://45.82.153.53:8000/account/login/",{username:username, password:password})
+        const response = await axios.post(LOGIN,{username:username, password:password})
         dispatch(LoginSlice.actions.userFetchSuccess())
         localStorage.setItem('accessToken', response.data.access);
         localStorage.setItem('refreshToken', response.data.refresh);
@@ -23,7 +24,7 @@ export const fetchAuth = (username:string,password:string)=>async (dispatch: App
 export const fetchRegistration = (username:string,password:string,email:string)=>async (dispatch:AppDispatch)=>{
     try {
         dispatch(LoginSlice.actions.userFetchProcess())
-        const response = await axios.post("http://45.82.153.53:8000/account/registration/",{username:username, password:password,email:email})
+        const response = await axios.post(REG,{username:username, password:password,email:email})
         dispatch(LoginSlice.actions.userFetchSuccess())
         localStorage.setItem('accessToken', response.data.access);
         localStorage.setItem('refreshToken', response.data.refresh);
@@ -45,7 +46,7 @@ export const fetchLogOut = (refresh:string)=>async (dispatch:AppDispatch)=>{
     dispatch(LoginSlice.actions.userLogOut())
     localStorage.clear()
     localStorage.setItem('isLogged', "false");
-    await axios.post("http://45.82.153.53:8000/account/logout/",body,config)
+    await axios.post(LOGOUT,body,config)
     }catch(error){
         
     }

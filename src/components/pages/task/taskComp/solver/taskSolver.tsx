@@ -40,7 +40,7 @@ const TaskSolver = ()=>{
             <div className='leftside'>
                 <div className='taskDescription'>
                     <h1>{taskState.name}</h1>
-                    <p onClick={()=>{console.log(taskState.patterns.python)}}>{taskState.desc}</p>
+                    <p>{taskState.desc}</p>
                     <h2>Limits</h2>
                     <div className="limits">
                         
